@@ -1,8 +1,3 @@
-balance = 0
-annualInterestRate = 0.0
-monthlyPaymentRate = 0.0
-
-
 def paying_minimum(balance, annualInterestRate, monthlyPaymentRate):
     minimumMonthlyPayment=0.0
     totalPaid = 0.0
