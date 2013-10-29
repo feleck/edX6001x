@@ -7,7 +7,6 @@ def lowest_payment(balance, annualInterestRate):
             interest = balance * monthlyInterestRate
             balance += interest
             totalPaid += lowestPayment
-            #print('Month: ' + str(month))
             #print('Ramaining balance: ' + str(round(balance, 2)))
             month += 1
         #print('Total paid: ' + str(round(totalPaid, 2)))
