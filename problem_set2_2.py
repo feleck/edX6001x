@@ -11,6 +11,7 @@ def lowest_payment(balance, annualInterestRate):
             balancePaid -= payment
             balancePaid += balancePaid * monthlyInterestRate
             month += 1
+        print balancePaid
 
     print('Lowest Payment: ' + str(payment))
 
