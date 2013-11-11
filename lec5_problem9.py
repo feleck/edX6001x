@@ -17,7 +17,14 @@ def semordnilap(str1, str2):
     returns: True if str1 and str2 are semordnilap;
              False otherwise.
     '''
-    if str1[1] == str2[-1]:
-        return True
+    print str1[0]
+    print str2[-1]
+        
+    if len(str1) != len(str2):
+        return False
+    if len(str1) == len(str2):
+        if str1 == str2:
+            return True
     else:
-        return semordnilap(str1[1:], str2[:-1])
+        semordnilap(str1[1:], str2[:-1])
+
