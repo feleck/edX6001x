@@ -24,21 +24,21 @@ def compChooseWord(hand, wordList, n):
     returns: string or None
     """
     # Create a new variable to store the maximum score seen so far (initially 0)
-    max_score = 0
+    best_score = 0
     # Create a new variable to store the best word seen so far (initially None)  
     best_word = None
     # For each word in the wordList
     for word in wordList:
         # If you can construct the word from your hand
         # (hint: you can use isValidWord, or - since you don't really need to test if the word is in the wordList - you can make a similar function that omits that test)
-        print 'test'
+        if isValidWord(word, hand, wordList) == True:
             # Find out how much making that word is worth
-            
+            score = getWordScore(word, n)
             # If the score for that word is higher than your best score
-
+            if score > best_score:
                 # Update your best score, and best word accordingly
-
-
+                best_score = score
+                best_word = word
     # return the best word you found.
     return best_word
 
@@ -64,7 +64,30 @@ def compPlayHand(hand, wordList, n):
     wordList: list (string)
     n: integer (HAND_SIZE; i.e., hand size required for additional points)
     """
-    # TO DO ... <-- Remove this comment when you code this function
+    # Keep track of the total score
+    total = 0
+    # As long as there are still letters left in the hand:
+    while calculateHandlen(hand) >= 1:
+        # Display the hand
+        print 'Current hand: ',
+        displayHand(hand)
+        # comp chooses word
+        word = compChooseWord(hand, wordList, n)
+        # If comp cant find word -:
+        if word == None:
+            # End the game (break out of the loop)
+            break
+            
+        # Otherwise (the input is not a single period):
+        else:
+            # Tell the user how many points the word earned, and the updated total score, in one line followed by a blank line
+            score = getWordScore(word, n)
+            total += score
+            print '"' + word + '" earned ' + str(score) + ' points. Total: ' + str(total) + ' points\n'
+            # Update the hand 
+            hand = updateHand(hand, word)
+    print 'Total score: ' + str(total) + ' points.\n'
+
     
 #
 # Problem #8: Playing a game
@@ -94,10 +117,34 @@ def playGame(wordList):
 
     wordList: list (string)
     """
-    # TO DO... <-- Remove this comment when you code this function
-    print "playGame not yet implemented." # <-- Remove this when you code this function
-
-        
+    answer = ''
+    hand = []
+    while answer != 'e':
+        second = ''
+        answer = raw_input("Enter n to deal a new hand, r to replay the last hand, or e to end game: ")   
+        if answer == 'e':
+            break
+        elif answer != 'n' and answer != 'r':
+            print 'Invalid command'
+        elif answer == 'r' and len(hand) <= 0:
+            print 'You have not played a hand yet. Please play a new hand first!'
+        else:
+            while second != 'c' and second != 'u':
+                second = raw_input("\nEnter u to have yourself play , c to have the computer play: ")
+                if second != 'u' and second != 'c':
+                    print 'Invalid command'
+            if answer == 'n':
+                hand = dealHand(HAND_SIZE)
+                if second == 'u':
+                    playHand(hand, wordList, HAND_SIZE)
+                else:
+                    compPlayHand(hand, wordList, HAND_SIZE)
+            else:
+                if second == 'u':
+                    playHand(hand, wordList, HAND_SIZE)
+                else:
+                    compPlayHand(hand, wordList, HAND_SIZE)
+                
 #
 # Build data structures used for entire session and play game
 #
