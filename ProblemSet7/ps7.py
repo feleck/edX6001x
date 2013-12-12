@@ -152,8 +152,10 @@ class PhraseTrigger(Trigger):
         self.T = T
 
     def evaluate(self, text):
-        return text.getTitle() in self.T or text.getSummary() in self.T or text.getSubject() in self.T
-
+        #return text.getTitle() in self.T or text.getSummary() in self.T or text.getSubject() in self.T
+        return self.T  in text.getTitle() or \
+               self.T  in text.getSummary() or \
+               self.T  in text.getSubject() 
 #======================
 # Part 3
 # Filtering
@@ -165,9 +167,13 @@ def filterStories(stories, triggerlist):
 
     Returns: a list of only the stories for which a trigger in triggerlist fires.
     """
-    # TODO: Problem 10
-    # This is a placeholder (we're just returning all the stories, with no filtering) 
-    return stories
+    result = []
+    for story in stories:
+        for trig in triggerlist:
+            if trig.evaluate(story):
+                if not story in result:
+                    result.append(story)
+    return result
 
 #======================
 # Part 4
@@ -189,8 +195,37 @@ def makeTrigger(triggerMap, triggerType, params, name):
 
     Returns a new instance of a trigger (ex: TitleTrigger, AndTrigger).
     """
-    # TODO: Problem 11
+    #trig = None
+    if triggerType == 'TITLE':
+        trig = TitleTrigger(params[0])
+        triggerMap[name] = trig
+    elif triggerType == 'SUBJECT':
+        trig = SubjectTrigger(params[0])
+        triggerMap[name] = trig
+    elif triggerType == 'SUMMARY':
+        trig = SummaryTrigger(params[0])
+        triggerMap[name] = trig
+    elif triggerType == 'NOT':
+        print params
+        trig = NotTrigger(triggerMap[params[0]])
+        triggerMap[name] = trig
+    elif triggerType == 'AND':
+        trig = AndTrigger(triggerMap[params[0]], triggerMap[params[1]])
+        triggerMap[name] = trig
+    elif triggerType == 'OR':
+        trig = OrTrigger(triggerMap[params[0]], triggerMap[params[1]])
+        triggerMap[name] = trig
+    elif triggerType == 'PHRASE':
+        print params
+#        words = ' '
+#        words.join(params)
+#        print 'words',
+#        print words
+        trig = PhraseTrigger(' '.join(params))
+        triggerMap[name] = trig
 
+    return trig
+    
 
 def readTriggerConfig(filename):
     """
@@ -241,15 +276,16 @@ def main_thread(master):
     # this with something more configurable in Problem 11
     try:
         # These will probably generate a few hits...
-        t1 = TitleTrigger("Obama")
-        t2 = SubjectTrigger("Romney")
-        t3 = PhraseTrigger("Election")
-        t4 = OrTrigger(t2, t3)
-        triggerlist = [t1, t4]
+
+        #t1 = TitleTrigger("Obama")
+        #t2 = SubjectTrigger("Romney")
+        #t3 = PhraseTrigger("Glasgow")
+        #t4 = OrTrigger(t2, t3)
+        #triggerlist = [t1, t4]
         
         # TODO: Problem 11
         # After implementing makeTrigger, uncomment the line below:
-        # triggerlist = readTriggerConfig("triggers.txt")
+        triggerlist = readTriggerConfig("triggers.txt")
 
         # **** from here down is about drawing ****
         frame = Frame(master)
