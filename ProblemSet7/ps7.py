@@ -123,6 +123,25 @@ class SummaryTrigger(WordTrigger):
 # TODO: AndTrigger
 # TODO: OrTrigger
 
+class NotTrigger(Trigger):
+    def __init__(self, T):
+        self.T = T
+    def evaluate(self, text):
+        return not self.T.evaluate(text)
+
+class AndTrigger(Trigger):
+    def __init__(self, T1, T2):
+        self.T1 = T1
+        self.T2 = T2
+    def evaluate(self, text):
+        return self.T1.evaluate(text) and self.T2.evaluate(text)
+
+class OrTrigger(Trigger):
+    def __init__(self, T1, T2):
+        self.T1 = T1
+        self.T2 = T2
+    def evaluate(self, text):
+        return self.T1.evaluate(text) or self.T2.evaluate(text)
 
 # Phrase Trigger
 # Question 9
