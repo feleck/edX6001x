@@ -147,7 +147,12 @@ class OrTrigger(Trigger):
 # Question 9
 
 # TODO: PhraseTrigger
+class PhraseTrigger(Trigger):
+    def __init__(self, T):
+        self.T = T
 
+    def evaluate(self, text):
+        return text.getTitle() in self.T or text.getSummary() in self.T or text.getSubject() in self.T
 
 #======================
 # Part 3
